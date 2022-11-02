@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import minicursoapiheroku.controller.dto.ParkingCreateDTO;
 import minicursoapiheroku.controller.dto.ParkingDTO;
 import minicursoapiheroku.controller.mapper.ParkingMapper;
@@ -20,6 +22,7 @@ import minicursoapiheroku.service.ParkingService;
 
 @RestController
 @RequestMapping("/parking")
+@Api(tags="Parking Controller")
 public class ParkingController {
 
 	
@@ -32,6 +35,7 @@ public class ParkingController {
 	}
 	
 	@GetMapping()
+	@ApiOperation("Find all Parkings")
 	public ResponseEntity<List<ParkingDTO>> findAll(){
 		List<Parking> parkingList = this.parkingService.findAll();
 		List<ParkingDTO> result = parkingMapper.toParkingDTOList(parkingList);
@@ -39,12 +43,14 @@ public class ParkingController {
 	}
 	
 	@GetMapping("/{id}")
+	@ApiOperation("Find a Parking by Id")
 	public ResponseEntity<ParkingDTO> findById(@PathVariable String id){
 		ParkingDTO result = parkingMapper.toParkingDto(this.parkingService.findById(id));
 		return ResponseEntity.ok(result);
 	}
 	
 	@PostMapping()
+	@ApiOperation("Create a new Parking")
 	public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO parkingDto){
 		Parking parkingCreate = this.parkingMapper.toParkingCreate(parkingDto);
 		Parking parking = parkingService.create(parkingCreate);
