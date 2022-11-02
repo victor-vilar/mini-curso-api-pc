@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import minicursoapiheroku.exception.ParkingNotFoundException;
 import minicursoapiheroku.model.Parking;
 
 @Service
@@ -36,7 +38,11 @@ public class ParkingService {
 	
 	public Parking findById(String id) {
 		
-		return parkingMap.get(id);
+		Parking parking =parkingMap.get(id);
+		if(parking == null) {
+			throw new ParkingNotFoundException(id);
+		}
+		return parking;
 	}
 
 	public Parking create(Parking parkingCreate) {
@@ -44,6 +50,19 @@ public class ParkingService {
 		parkingCreate.setEntryDate(LocalDateTime.now());
 		parkingMap.put(parkingCreate.getId(), parkingCreate);
 		return parkingCreate;
+	}
+
+	public void deleteById(String id) {
+		findById(id);
+		parkingMap.remove(id);
+		
+	}
+
+	public Parking update(Parking parkingCreate, String id) {
+		Parking parking = findById(id);
+		parking.setColor(parkingCreate.getColor());
+		parkingMap.replace(id, parking);
+		return parking;
 	}
 	
 }

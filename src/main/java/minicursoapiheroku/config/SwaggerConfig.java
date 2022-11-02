@@ -43,7 +43,7 @@ public class SwaggerConfig {
 	public Docket detalheAPI() {
 		Docket docket = new Docket(DocumentationType.SWAGGER_2);
 		
-		docket.select().apis(RequestHandlerSelectors.basePackage("minicursoapiheroku.controller"))
+		docket.select().apis(RequestHandlerSelectors.basePackage("minicursoapiheroku"))
 		.paths(PathSelectors.any())
 		.build()
 		.apiInfo(this.informacoesAPI().build())
