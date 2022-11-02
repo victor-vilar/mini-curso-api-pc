@@ -1,6 +1,6 @@
 package minicursoapiheroku.service;
 
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,11 @@ public class ParkingService {
 	
 	static {
 		String id = getUUID();
+		String id1 = getUUID();
 		Parking parking = new Parking(id,"XXX-000","SC","CELTA","BRANCO");
+		Parking parking2 = new Parking(id1,"XXX-111","SP","GOL","VERDE");
 		parkingMap.put(id, parking);
+		parkingMap.put(id1, parking2);
 	}
 	
 	public static String getUUID() {
@@ -29,6 +32,18 @@ public class ParkingService {
 	
 	public List<Parking> findAll(){
 		return parkingMap.values().stream().collect(Collectors.toList());
+	}
+	
+	public Parking findById(String id) {
+		
+		return parkingMap.get(id);
+	}
+
+	public Parking create(Parking parkingCreate) {
+		parkingCreate.setId(getUUID());
+		parkingCreate.setEntryDate(LocalDateTime.now());
+		parkingMap.put(parkingCreate.getId(), parkingCreate);
+		return parkingCreate;
 	}
 	
 }
